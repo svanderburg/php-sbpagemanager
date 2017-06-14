@@ -12,7 +12,7 @@ function displayDynamicMenuSection(PDO $dbh, $level, PagePermissionChecker $chec
 	{
 		if($level == 0)
 			$parentId = "";
-		if($level > 0)
+		else if($level > 0)
 		{
 			$parentId = $query[0];
 

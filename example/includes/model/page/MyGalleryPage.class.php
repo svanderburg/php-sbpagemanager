@@ -9,7 +9,7 @@ class MyGalleryPage extends GalleryPage
 
 	public function __construct(PDO $dbh)
 	{
-		parent::__construct();
+		parent::__construct("Gallery");
 		$this->dbh = $dbh;
 	}
 
