@@ -20,7 +20,7 @@ class PageManager extends DynamicContentCRUDPage
 			$keyFields = array();
 		
 		$propagatedKeyFields = $keyFields;
-		$propagatedKeyFields[$index] = new TextField("Id", true);
+		$propagatedKeyFields[$index] = new TextField("Id", true, 20, 255);
 		
 		if($index < $numOfLevels)
 			$dynamicSubPage = new PageManager($dbh, $numOfLevels, $checker, null, $index + 1, $propagatedKeyFields);

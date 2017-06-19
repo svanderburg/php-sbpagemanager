@@ -31,8 +31,8 @@ class PageCRUDModel extends CRUDModel
 
 		$this->form = new Form(array(
 			"__operation" => new HiddenField(true),
-			"PAGE_ID" => new TextField("Id", $nonRoot),
-			"Title" => new TextField("Title", true),
+			"PAGE_ID" => new TextField("Id", $nonRoot, 20, 255),
+			"Title" => new TextField("Title", true, 20, 255),
 			"Contents" => new HTMLEditorWithGalleryField("editor1", "Contents", $baseURL."/picturepicker.php", $baseURL."/iframepage.html", $baseURL."/lib/sbeditor/editor/image", false),
 			"PARENT_ID" => new HiddenField(false)
 		));
