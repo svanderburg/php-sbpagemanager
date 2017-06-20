@@ -38,7 +38,7 @@ function displayDynamicMenuSection(PDO $dbh, $level, PagePermissionChecker $chec
 			if($parentId !== "")
 				$parentId = "/".$parentId;
 			?>
-			<a class="create_page" href="<?php print($_SERVER["SCRIPT_NAME"].$parentId); ?>?__operation=create_page">Create page</a>
+			<a class="create-page" href="<?php print($_SERVER["SCRIPT_NAME"].$parentId); ?>?__operation=create_page">Create page</a>
 			<?php
 		}
 	}
