@@ -56,10 +56,10 @@ class PageManager extends DynamicContentCRUDPage
 		return new PageCRUDModel($this, $this->dbh, $this->checker);
 	}
 
-	public function lookupSubPage(Page $entryPage, array $ids, $index = 0)
+	public function lookupSubPage(Application $application, array $ids, $index = 0)
 	{
 		if(count($ids) == $index)
-			return parent::lookupSubPage($entryPage, $ids, $index);
+			return parent::lookupSubPage($application, $ids, $index);
 		else
 		{
 			if($index == 0)
@@ -69,13 +69,13 @@ class PageManager extends DynamicContentCRUDPage
 				if($this->overrides !== null && array_key_exists($currentId, $this->overrides)) // If an override has been provided, do a lookup for that page
 				{
 					$page = $this->overrides[$currentId];
-					return $page->lookupSubPage($entryPage, $ids, $index + 1);
+					return $page->lookupSubPage($application, $ids, $index + 1);
 				}
 				else
-					return parent::lookupSubPage($entryPage, $ids, $index);
+					return parent::lookupSubPage($application, $ids, $index);
 			}
 			else
-				return parent::lookupSubPage($entryPage, $ids, $index);
+				return parent::lookupSubPage($application, $ids, $index);
 		}
 	}
 }
