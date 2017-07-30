@@ -31,7 +31,12 @@ The page manager can be conveniently integrated into an application that uses
 the `php-sblayout` framework:
 
 ```php
-require_once("pagemanager/model/page/PageManager.class.php");
+use SBLayout\Model\Application;
+use SBLayout\Model\Page\HiddenStaticContentPage;
+use SBLayout\Model\Page\Content\Contents;
+use SBLayout\Model\Section\ContentsSection;
+use SBLayout\Model\Section\StaticSection;
+use SBPageManager\Model\Page\PageManager;
 
 $dbh = new PDO("mysql:host=localhost;dbname=pagemanager", "root", "admin", array(
     PDO::ATTR_PERSISTENT => true
@@ -83,7 +88,7 @@ To manage the write permissions of the page manager, we must implement a
 permission checker, such as:
 
 ```php
-require_once("pagemanager/model/PagePermissionChecker.interface.php");
+use SBPageManager\Model\PagePermissionChecker;
 
 class MyPagePermissionChecker implements PagePermissionChecker
 {
@@ -103,9 +108,7 @@ displayed as follows:
 
 ```php
 <?php
-require_once("pagemanager/view/html/displaydynamicmenusection.inc.php");
-
-displayDynamicMenuSection($GLOBALS["dbh"], 0, $GLOBALS["checker"]);
+\SBPageManager\View\HTML\displayDynamicMenuSection($GLOBALS["dbh"], 0, $GLOBALS["checker"]);
 ?>
 ```
 

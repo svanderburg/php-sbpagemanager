@@ -1,13 +1,14 @@
 <?php
-set_include_path("./lib/sblayout:./lib/sbdata:./lib/sbgallery:./lib/sbeditor");
+require_once("../vendor/autoload.php");
 
-require_once("includes/model/MyGallery.class.php");
-require_once("gallery/view/html/picturepickerpage.inc.php");
+use Example\Model\MyGallery;
 
-$dbh = new PDO("mysql:host=localhost;dbname=pagemanager", "root", "admin", array(
+require_once("includes/config.php");
+
+$dbh = new PDO($config["dbDsn"], $config["dbUsername"], $config["dbPassword"], array(
 	PDO::ATTR_PERSISTENT => true
 ));
 
 $myGallery = new MyGallery($dbh);
-displayPicturePickerPage($myGallery);
+\SBGallery\View\HTML\displayPicturePickerPage($myGallery);
 ?>
