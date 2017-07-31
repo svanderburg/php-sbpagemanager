@@ -17,17 +17,17 @@ function displayDynamicMenuSection(PDO $dbh, $level, PagePermissionChecker $chec
 			$parentId = "";
 		else if($level > 0)
 		{
-			$parentId = $query[0];
+			$parentId = reset($query);
 
 			for($i = 1; $i < $level; $i++)
-				$parentId .= "/".$query[$i];
+				$parentId .= "/".next($query);
 		}
 
 		$stmt = PageEntity::querySubPages($dbh, $parentId);
 
 		while(($row = $stmt->fetch()) !== false)
 		{
-			if($level < count($query) && basename($row["PAGE_ID"]) === $query[$level])
+			if($level < count($query) && array_key_exists($level, $query) && basename($row["PAGE_ID"]) === $query[$level])
 				$active = ' class="active"';
 			else
 				$active = "";
