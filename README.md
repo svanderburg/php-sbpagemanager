@@ -91,16 +91,16 @@ $application = new Application(
 
     /* Sections */
     array(
-        "header" => new StaticSection("header.inc.php"),
-        "menu" => new StaticSection("menu.inc.php"),
-        "submenu" => new StaticSection("submenu.inc.php"),
+        "header" => new StaticSection("header.php"),
+        "menu" => new StaticSection("menu.php"),
+        "submenu" => new StaticSection("submenu.php"),
         "contents" => new ContentsSection(true)
     ),
 
     /* Pages */
     new PageManager($dbh, 2, $checker, array(
-        "403" => new HiddenStaticContentPage("Forbidden", new Contents("error/403.inc.php")),
-        "404" => new HiddenStaticContentPage("Page not found", new Contents("error/404.inc.php")),
+        "403" => new HiddenStaticContentPage("Forbidden", new Contents("error/403.php")),
+        "404" => new HiddenStaticContentPage("Page not found", new Contents("error/404.php")),
         "gallery" => new MyGalleryPage($dbh)
     ))
 );
