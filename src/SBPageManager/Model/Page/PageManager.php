@@ -2,6 +2,7 @@
 namespace SBPageManager\Model\Page;
 use PDO;
 use SBLayout\Model\Application;
+use SBLayout\Model\Route;
 use SBLayout\Model\Page\Page;
 use SBLayout\Model\Page\Content\Contents;
 use SBData\Model\Field\TextField;
@@ -60,26 +61,29 @@ class PageManager extends DynamicContentCRUDPage
 		return new PageCRUDModel($this, $this->dbh, $this->checker);
 	}
 
-	public function lookupSubPage(Application $application, array $ids, $index = 0)
+	/**
+	 * @see Page#examineRoute()
+	 */
+	public function examineRoute(Application $application, Route $route, $index = 0)
 	{
-		if(count($ids) == $index)
-			return parent::lookupSubPage($application, $ids, $index);
+		if($route->indexIsAtRequestedPage($index))
+			parent::examineRoute($application, $route, $index);
 		else
 		{
 			if($index == 0)
 			{
-				$currentId = $ids[$index]; // Take the first id of the array
+				$currentId = $route->getId($index); // Take the first id of the array
 
 				if($this->overrides !== null && array_key_exists($currentId, $this->overrides)) // If an override has been provided, do a lookup for that page
 				{
 					$page = $this->overrides[$currentId];
-					return $page->lookupSubPage($application, $ids, $index + 1);
+					$page->examineRoute($application, $route, $index + 1);
 				}
 				else
-					return parent::lookupSubPage($application, $ids, $index);
+					parent::examineRoute($application, $route, $index);
 			}
 			else
-				return parent::lookupSubPage($application, $ids, $index);
+				parent::examineRoute($application, $route, $index);
 		}
 	}
 }
