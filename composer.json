@@ -49,8 +49,5 @@
       "svanderburg/php-sbcrud": "dev-master",
       "svanderburg/php-sbeditor": "dev-master",
       "svanderburg/php-sbgallery": "dev-master"
-  },
-  "require-dev": {
-      "phpdocumentor/phpdocumentor": "2.9.x"
   }
 }
