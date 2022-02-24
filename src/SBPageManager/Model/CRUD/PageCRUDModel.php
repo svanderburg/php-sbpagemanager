@@ -14,13 +14,13 @@ use SBPageManager\Model\Entity\PageEntity;
 
 class PageCRUDModel extends CRUDModel
 {
-	public $crudPage;
+	public CRUDPage $crudPage;
 
-	public $dbh;
+	public PDO $dbh;
 
-	public $contents;
+	public string $contents;
 
-	public $form = null;
+	public ?Form $form = null;
 
 	public function __construct(CRUDPage $crudPage, PDO $dbh, PagePermissionChecker $checker)
 	{
@@ -30,7 +30,7 @@ class PageCRUDModel extends CRUDModel
 		$this->checker = $checker;
 	}
 
-	private function constructPageForm($nonRoot)
+	private function constructPageForm($nonRoot): void
 	{
 		$baseURL = Page::computeBaseURL();
 
@@ -43,7 +43,7 @@ class PageCRUDModel extends CRUDModel
 		));
 	}
 
-	private function composePageId()
+	private function composePageId(): string
 	{
 		/* Compose the page id from the path components */
 		$pageId = "";
@@ -59,7 +59,7 @@ class PageCRUDModel extends CRUDModel
 		return $pageId;
 	}
 
-	private function composePageSuffix($pageId)
+	private function composePageSuffix($pageId): string
 	{
 		if($pageId === "")
 			return $pageId;
@@ -67,7 +67,7 @@ class PageCRUDModel extends CRUDModel
 			return "/".$pageId;
 	}
 
-	private function createPage()
+	private function createPage(): void
 	{
 		$this->crudPage->title = "Create page";
 		$this->constructPageForm(true);
@@ -81,7 +81,7 @@ class PageCRUDModel extends CRUDModel
 		$this->form->importValues($row);
 	}
 
-	private function insertPage()
+	private function insertPage(): void
 	{
 		$this->constructPageForm(true);
 		$this->form->importValues($_REQUEST);
@@ -101,7 +101,7 @@ class PageCRUDModel extends CRUDModel
 		}
 	}
 
-	private function updatePage()
+	private function updatePage(): void
 	{
 		$oldPageId = $this->composePageId();
 
@@ -126,7 +126,7 @@ class PageCRUDModel extends CRUDModel
 		}
 	}
 
-	private function moveUpPage()
+	private function moveUpPage(): void
 	{
 		$pageId = $this->composePageId();
 		PageEntity::moveUp($this->dbh, $pageId);
@@ -135,7 +135,7 @@ class PageCRUDModel extends CRUDModel
 		exit();
 	}
 
-	private function moveDownPage()
+	private function moveDownPage(): void
 	{
 		$pageId = $this->composePageId();
 		PageEntity::moveDown($this->dbh, $pageId);
@@ -144,7 +144,7 @@ class PageCRUDModel extends CRUDModel
 		exit();
 	}
 
-	private function removePage()
+	private function removePage(): void
 	{
 		$pageId = $this->composePageId();
 
@@ -164,7 +164,7 @@ class PageCRUDModel extends CRUDModel
 		exit();
 	}
 
-	private function viewPage()
+	private function viewPage(): void
 	{
 		$pageId = $this->composePageId();
 
@@ -183,7 +183,7 @@ class PageCRUDModel extends CRUDModel
 		}
 	}
 
-	private function viewEditablePage()
+	private function viewEditablePage(): void
 	{
 		$pageId = $this->composePageId();
 		$this->constructPageForm($pageId !== "");
@@ -206,7 +206,7 @@ class PageCRUDModel extends CRUDModel
 		}
 	}
 
-	public function executeOperation()
+	public function executeOperation(): void
 	{
 		if($this->checker->checkWritePermissions())
 		{

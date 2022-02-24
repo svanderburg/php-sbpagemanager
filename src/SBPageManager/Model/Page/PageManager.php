@@ -6,19 +6,20 @@ use SBLayout\Model\Route;
 use SBLayout\Model\Page\Page;
 use SBLayout\Model\Page\Content\Contents;
 use SBData\Model\Field\TextField;
+use SBCrud\Model\CRUDModel;
 use SBCrud\Model\Page\DynamicContentCRUDPage;
 use SBPageManager\Model\PagePermissionChecker;
 use SBPageManager\Model\CRUD\PageCRUDModel;
 
 class PageManager extends DynamicContentCRUDPage
 {
-	public $dbh;
+	public PDO $dbh;
 
-	public $checker;
+	public PagePermissionChecker $checker;
 
-	public $overrides;
+	public ?array $overrides;
 
-	public function __construct(PDO $dbh, $numOfLevels, PagePermissionChecker $checker, array $overrides = null, $index = 0, array $keyFields = null)
+	public function __construct(PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, array $overrides = null, int $index = 0, array $keyFields = null)
 	{
 		/* Compose sub pages */
 		if($keyFields === null)
@@ -56,7 +57,7 @@ class PageManager extends DynamicContentCRUDPage
 		$this->overrides = $overrides;
 	}
 
-	public function constructCRUDModel()
+	public function constructCRUDModel(): CRUDModel
 	{
 		return new PageCRUDModel($this, $this->dbh, $this->checker);
 	}
@@ -64,7 +65,7 @@ class PageManager extends DynamicContentCRUDPage
 	/**
 	 * @see Page#examineRoute()
 	 */
-	public function examineRoute(Application $application, Route $route, $index = 0)
+	public function examineRoute(Application $application, Route $route, int $index = 0): void
 	{
 		if($route->indexIsAtRequestedPage($index))
 			parent::examineRoute($application, $route, $index);

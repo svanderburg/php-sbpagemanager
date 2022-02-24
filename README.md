@@ -162,10 +162,10 @@ in read mode by adding the `?view=1` GET parameter to the URLs.
 API documentation
 =================
 This package includes API documentation that can be generated with
-[phpDocumentor](https://www.phpdoc.org):
+[Doxygen](https://www.doxygen.nl):
 
 ```bash
-$ vendor/bin/phpdoc
+$ doxygen
 ```
 
 License

@@ -3,14 +3,15 @@ namespace SBPageManager\Model\Page;
 use PDO;
 use SBLayout\Model\Page\Page;
 use SBLayout\Model\Page\Content\Contents;
+use SBCrud\Model\CRUDModel;
 use SBCrud\Model\Page\StaticContentCRUDPage;
 use SBPageManager\Model\PagePermissionChecker;
 
 class PageManagerLeaf extends StaticContentCRUDPage
 {
-	public $dbh;
+	public PDO $dbh;
 
-	public $checker;
+	public PagePermissionChecker $checker;
 
 	public function __construct(PDO $dbh, PagePermissionChecker $checker, array $keyFields)
 	{
@@ -28,13 +29,13 @@ class PageManagerLeaf extends StaticContentCRUDPage
 			new Contents($contentsPath."error.php"),
 			/* Contents per operation */
 			array(),
-			null);
+			array());
 
 		$this->dbh = $dbh;
 		$this->checker = $checker;
 	}
 
-	public function constructCRUDModel()
+	public function constructCRUDModel(): CRUDModel
 	{
 		return new PageCRUDModel($this, $this->dbh, $this->checker);
 	}

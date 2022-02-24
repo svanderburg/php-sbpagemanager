@@ -2,10 +2,11 @@
 namespace SBPageManager\Model\Entity;
 use Exception;
 use PDO;
+use PDOStatement;
 
 class PageEntity
 {
-	public static function queryOne(PDO $dbh, $id)
+	public static function queryOne(PDO $dbh, string $id): PDOStatement
 	{
 		$stmt = $dbh->prepare("select * from page where PAGE_ID = ?");
 		if(!$stmt->execute(array($id)))
@@ -14,7 +15,7 @@ class PageEntity
 		return $stmt;
 	}
 
-	public static function querySubPages(PDO $dbh, $parentId)
+	public static function querySubPages(PDO $dbh, string $parentId): PDOStatement
 	{
 		$stmt = $dbh->prepare("select PAGE_ID, Title from page where PARENT_ID = ? order by Ordering");
 		if(!$stmt->execute(array($parentId)))
@@ -23,7 +24,7 @@ class PageEntity
 		return $stmt;
 	}
 
-	public static function insert(PDO $dbh, array $page)
+	public static function insert(PDO $dbh, array $page): void
 	{
 		$dbh->beginTransaction();
 
@@ -46,7 +47,7 @@ class PageEntity
 		$dbh->commit();
 	}
 
-	public static function update(PDO $dbh, array $page, $id)
+	public static function update(PDO $dbh, array $page, string $id): void
 	{
 		$dbh->beginTransaction();
 
@@ -96,7 +97,7 @@ class PageEntity
 		$dbh->commit();
 	}
 
-	public static function remove(PDO $dbh, $id)
+	public static function remove(PDO $dbh, string $id): void
 	{
 		$dbh->beginTransaction();
 
@@ -125,7 +126,7 @@ class PageEntity
 		$dbh->commit();
 	}
 
-	public static function queryPredecessor(PDO $dbh, $parentId, $ordering)
+	public static function queryPredecessor(PDO $dbh, string $parentId, int $ordering): PDOStatement
 	{
 		$stmt = $dbh->prepare("select PAGE_ID, Ordering ".
 			"from page ".
@@ -136,7 +137,7 @@ class PageEntity
 		return $stmt;
 	}
 
-	public static function querySuccessor(PDO $dbh, $parentId, $ordering)
+	public static function querySuccessor(PDO $dbh, string $parentId, int $ordering): PDOStatement
 	{
 		$stmt = $dbh->prepare("select PAGE_ID, Ordering ".
 			"from page ".
@@ -147,7 +148,7 @@ class PageEntity
 		return $stmt;
 	}
 
-	private static function switchPageOrdering(PDO $dbh, array $firstPage, array $secondPage)
+	private static function switchPageOrdering(PDO $dbh, array $firstPage, array $secondPage): void
 	{
 		$stmt = $dbh->prepare("update page set Ordering = ? where PAGE_ID = ?");
 		if(!$stmt->execute(array($secondPage["Ordering"], $firstPage["PAGE_ID"])))
@@ -158,7 +159,7 @@ class PageEntity
 			throw new Exception($stmt->errorInfo()[2]);
 	}
 
-	public static function moveUp(PDO $dbh, $id)
+	public static function moveUp(PDO $dbh, string $id): void
 	{
 		$dbh->beginTransaction();
 
@@ -183,7 +184,7 @@ class PageEntity
 		}
 	}
 
-	public static function moveDown(PDO $dbh, $id)
+	public static function moveDown(PDO $dbh, string $id): void
 	{
 		$dbh->beginTransaction();
 

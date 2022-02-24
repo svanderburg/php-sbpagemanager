@@ -1,10 +1,23 @@
 <?php
+/**
+ * @file
+ * @brief View-HTML-DynamicMenuSection module
+ * @defgroup View-HTML-DynamicMenuSection
+ * @{
+ */
 namespace SBPageManager\View\HTML;
 use PDO;
 use SBPageManager\Model\PagePermissionChecker;
 use SBPageManager\Model\Entity\PageEntity;
 
-function displayDynamicMenuSection(PDO $dbh, $level, PagePermissionChecker $checker)
+/**
+ * Displays a menu section for a certain level with links retrieved from the database.
+ *
+ * @param $dbh Database connection handler
+ * @param $level Level of the menu section
+ * @param $checker Permission checker that checks whether the user is authorized to edit the page structure
+ */
+function displayDynamicMenuSection(PDO $dbh, int $level, PagePermissionChecker $checker)
 {
 	if(array_key_exists("query", $GLOBALS))
 		$query = $GLOBALS["query"];
@@ -46,4 +59,8 @@ function displayDynamicMenuSection(PDO $dbh, $level, PagePermissionChecker $chec
 		}
 	}
 }
+
+/**
+ * @}
+ */
 ?>
