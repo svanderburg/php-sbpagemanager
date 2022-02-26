@@ -18,6 +18,8 @@ class PageCRUDModel extends CRUDModel
 
 	public PDO $dbh;
 
+	public PagePermissionChecker $checker;
+
 	public string $contents;
 
 	public ?Form $form = null;
@@ -59,7 +61,7 @@ class PageCRUDModel extends CRUDModel
 		return $pageId;
 	}
 
-	private function composePageSuffix($pageId): string
+	private function composePageSuffix(string $pageId): string
 	{
 		if($pageId === "")
 			return $pageId;
