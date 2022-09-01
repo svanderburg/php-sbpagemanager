@@ -10,5 +10,5 @@ $dbh = new PDO($config["dbDsn"], $config["dbUsername"], $config["dbPassword"], a
 ));
 
 $myGallery = new MyGallery($dbh);
-\SBGallery\View\HTML\displayPicturePickerPage($myGallery);
+\SBGallery\View\HTML\displayPicturePickerPage($myGallery, "Gallery", array("styles/default.css", "styles/gallery.css"));
 ?>

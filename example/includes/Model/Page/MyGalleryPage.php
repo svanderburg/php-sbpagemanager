@@ -13,7 +13,7 @@ class MyGalleryPage extends GalleryPage
 
 	public function __construct(PDO $dbh)
 	{
-		parent::__construct("Gallery");
+		parent::__construct("Gallery", array(), "HTML", null, "contents", array("gallery.css"));
 		$this->dbh = $dbh;
 	}
 
