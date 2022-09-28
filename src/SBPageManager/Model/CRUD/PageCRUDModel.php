@@ -53,9 +53,9 @@ class PageCRUDModel extends CRUDModel
 		foreach($this->keyFields as $id => $field)
 		{
 			if($pageId === "")
-				$pageId = $field->value;
+				$pageId = $field->exportValue();
 			else
-				$pageId .= "/".$field->value;
+				$pageId .= "/".$field->exportValue();
 		}
 
 		return $pageId;
