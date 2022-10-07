@@ -5,7 +5,7 @@ use SBLayout\Model\Application;
 use SBLayout\Model\Route;
 use SBLayout\Model\Page\Page;
 use SBLayout\Model\Page\Content\Contents;
-use SBData\Model\Field\TextField;
+use SBData\Model\Value\Value;
 use SBCrud\Model\CRUDModel;
 use SBCrud\Model\Page\DynamicContentCRUDPage;
 use SBPageManager\Model\PagePermissionChecker;
@@ -19,19 +19,19 @@ class PageManager extends DynamicContentCRUDPage
 
 	public ?array $overrides;
 
-	public function __construct(PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, array $overrides = null, int $index = 0, array $keyFields = null)
+	public function __construct(PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, array $overrides = null, int $index = 0, array $keyValues = null)
 	{
 		/* Compose sub pages */
-		if($keyFields === null)
-			$keyFields = array();
+		if($keyValues === null)
+			$keyValues = array();
 		
-		$propagatedKeyFields = $keyFields;
-		$propagatedKeyFields[$index] = new TextField("Id", true, 20, 255);
+		$propagatedKeyValues = $keyValues;
+		$propagatedKeyValues[$index] = new Value(true, 255);
 		
 		if($index < $numOfLevels)
-			$dynamicSubPage = new PageManager($dbh, $numOfLevels, $checker, null, $index + 1, $propagatedKeyFields);
+			$dynamicSubPage = new PageManager($dbh, $numOfLevels, $checker, null, $index + 1, $propagatedKeyValues);
 		else
-			$dynamicSubPage = new PageManagerLeaf($dbh, $checker, $propagatedKeyFields);
+			$dynamicSubPage = new PageManagerLeaf($dbh, $checker, $propagatedKeyValues);
 		
 		/* Compose page */
 		$baseURL = Page::computeBaseURL();
@@ -42,8 +42,8 @@ class PageManager extends DynamicContentCRUDPage
 		parent::__construct("Error",
 			/* Parameter name */
 			$index,
-			/* Key fields */
-			$keyFields,
+			/* Key values */
+			$keyValues,
 			/* Default contents */
 			new Contents($contentsPath."page.php", null, null, array($htmlEditorJsPath)),
 			/* Error contents */

@@ -13,7 +13,7 @@ class PageManagerLeaf extends StaticContentCRUDPage
 
 	public PagePermissionChecker $checker;
 
-	public function __construct(PDO $dbh, PagePermissionChecker $checker, array $keyFields)
+	public function __construct(PDO $dbh, PagePermissionChecker $checker, array $keyValues)
 	{
 		$baseURL = Page::computeBaseURL();
 
@@ -21,8 +21,8 @@ class PageManagerLeaf extends StaticContentCRUDPage
 		$htmlEditorJsPath = $baseURL."/scripts/htmleditor.js";
 
 		parent::__construct("Error",
-			/* Key fields */
-			$keyFields,
+			/* Key values */
+			$keyValues,
 			/* Default contents */
 			new Contents($contentsPath."page.php", null, null, array($htmlEditorJsPath)),
 			/* Error contents */
