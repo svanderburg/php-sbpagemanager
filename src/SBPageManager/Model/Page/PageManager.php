@@ -5,6 +5,7 @@ use SBLayout\Model\Application;
 use SBLayout\Model\Route;
 use SBLayout\Model\Page\Page;
 use SBLayout\Model\Page\Content\Contents;
+use SBData\Model\ParameterMap;
 use SBData\Model\Value\Value;
 use SBCrud\Model\CRUDModel;
 use SBCrud\Model\Page\DynamicContentCRUDPage;
@@ -19,20 +20,21 @@ class PageManager extends DynamicContentCRUDPage
 
 	public ?array $overrides;
 
-	public function __construct(PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, array $overrides = null, int $index = 0, array $keyValues = null)
+	public function __construct(PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, array $overrides = null, int $index = 0, ParameterMap $keyParameterMap = null)
 	{
 		/* Compose sub pages */
-		if($keyValues === null)
-			$keyValues = array();
-		
-		$propagatedKeyValues = $keyValues;
-		$propagatedKeyValues[$index] = new Value(true, 255);
-		
+		if($keyParameterMap === null)
+			$keyParameterMap = new ParameterMap();
+
+		$propagatedKeyParameterMap = new ParameterMap();
+		$propagatedKeyParameterMap->values = $keyParameterMap->values;
+		$propagatedKeyParameterMap->values[$index] = new Value(true, 255);
+
 		if($index < $numOfLevels)
-			$dynamicSubPage = new PageManager($dbh, $numOfLevels, $checker, null, $index + 1, $propagatedKeyValues);
+			$dynamicSubPage = new PageManager($dbh, $numOfLevels, $checker, null, $index + 1, $propagatedKeyParameterMap);
 		else
-			$dynamicSubPage = new PageManagerLeaf($dbh, $checker, $propagatedKeyValues);
-		
+			$dynamicSubPage = new PageManagerLeaf($dbh, $checker, $propagatedKeyParameterMap);
+
 		/* Compose page */
 		$baseURL = Page::computeBaseURL();
 
@@ -42,8 +44,10 @@ class PageManager extends DynamicContentCRUDPage
 		parent::__construct("Error",
 			/* Parameter name */
 			$index,
-			/* Key values */
-			$keyValues,
+			/* Key parameters */
+			$keyParameterMap,
+			/* Request parameters */
+			new ParameterMap(),
 			/* Default contents */
 			new Contents($contentsPath."page.php", null, null, array($htmlEditorJsPath)),
 			/* Error contents */

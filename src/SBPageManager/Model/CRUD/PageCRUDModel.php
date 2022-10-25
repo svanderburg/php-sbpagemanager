@@ -50,7 +50,7 @@ class PageCRUDModel extends CRUDModel
 		/* Compose the page id from the path components */
 		$pageId = "";
 
-		foreach($this->keyValues as $id => $value)
+		foreach($this->keyParameterMap->values as $id => $value)
 		{
 			if($pageId === "")
 				$pageId = $value->value;
