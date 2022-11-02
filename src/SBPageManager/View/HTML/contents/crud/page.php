@@ -5,7 +5,7 @@ if($crudModel->checker->checkWritePermissions())
 {
 	?>
 	<p>
-		<a href="<?php print($_SERVER["SCRIPT_NAME"]); ?>/gallery">Gallery</a>
+		<a href="<?= $_SERVER["SCRIPT_NAME"] ?>/gallery">Gallery</a>
 		<?php
 		if(array_key_exists("query", $GLOBALS) && count($GLOBALS["query"]) > 0)
 		{
