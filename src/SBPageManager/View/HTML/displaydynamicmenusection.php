@@ -7,17 +7,25 @@
  */
 namespace SBPageManager\View\HTML;
 use PDO;
-use SBPageManager\Model\PagePermissionChecker;
+use SBLayout\Model\Page\Page;
 use SBPageManager\Model\Entity\PageEntity;
+use SBPageManager\Model\Page\PageManagerNode;
+use SBPageManager\Model\Page\PageManagerLeaf;
+use SBPageManager\Model\Page\PageManagerOperationPage;
+
+function visitedPageManagerPage(Page $currentPage): bool
+{
+	return $currentPage instanceof PageManagerNode || $currentPage instanceof PageManagerLeaf || $currentPage instanceof PageManagerOperationPage;
+}
 
 /**
  * Displays a menu section for a certain level with links retrieved from the database.
  *
  * @param $dbh Database connection handler
  * @param $level Level of the menu section
- * @param $checker Permission checker that checks whether the user is authorized to edit the page structure
+ * @param $currentPage The currently opened page
  */
-function displayDynamicMenuSection(PDO $dbh, int $level, PagePermissionChecker $checker)
+function displayDynamicMenuSection(PDO $dbh, int $level, Page $currentPage): void
 {
 	if(array_key_exists("query", $GLOBALS))
 		$query = $GLOBALS["query"];
@@ -49,7 +57,7 @@ function displayDynamicMenuSection(PDO $dbh, int $level, PagePermissionChecker $
 			<?php
 		}
 
-		if($checker->checkWritePermissions())
+		if($currentPage->checker->checkWritePermissions())
 		{
 			if($parentId !== "")
 				$parentId = "/".$parentId;

@@ -37,6 +37,7 @@ $application = new Application(
 
 	/* Pages */
 	new PageManager($dbh, 2, $checker, array(
+		"400" => new HiddenStaticContentPage("Bad request", new Contents("error/400.php")),
 		"403" => new HiddenStaticContentPage("Forbidden", new Contents("error/403.php")),
 		"404" => new HiddenStaticContentPage("Page not found", new Contents("error/404.php")),
 		"gallery" => new MyGalleryPage($dbh)

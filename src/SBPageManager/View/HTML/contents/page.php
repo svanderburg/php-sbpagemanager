@@ -1,7 +1,7 @@
 <?php
-global $crudModel;
+global $currentPage, $crudInterface;
 
-if($crudModel->checker->checkWritePermissions())
+if($currentPage->checker->checkWritePermissions())
 {
 	?>
 	<p>
@@ -18,7 +18,7 @@ if($crudModel->checker->checkWritePermissions())
 		?>
 	</p>
 	<?php
-	\SBData\View\HTML\displayEditableForm($crudModel->form,
+	\SBData\View\HTML\displayEditableForm($crudInterface->form,
 		"Submit",
 		"One or more fields are incorrectly specified and marked with a red color!",
 		"This field is incorrectly specified!");
@@ -29,5 +29,5 @@ if($crudModel->checker->checkWritePermissions())
 	<?php
 }
 else
-	print($crudModel->contents);
+	print($currentPage->entity["Contents"]);
 ?>

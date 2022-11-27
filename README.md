@@ -146,12 +146,16 @@ displayed as follows:
 
 ```php
 <?php
-\SBPageManager\View\HTML\displayDynamicMenuSection($GLOBALS["dbh"], 0, $GLOBALS["checker"]);
+global $currentPage, $dbh;
+
+if(\SBPageManager\View\HTML\visitedPageManagerPage($currentPage))
+    \SBPageManager\View\HTML\displayDynamicMenuSection($dbh, 0, $currentPage);
 ?>
 ```
 
-The above code fragment displays the menu for the items on the menu level
-(level 0).
+The above code fragment checks whether the selected page is managed by the page
+manager framework and displays the menu for the items on the menu level (level
+0).
 
 Example
 =======

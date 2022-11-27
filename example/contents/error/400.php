@@ -3,7 +3,7 @@ if($GLOBALS["error"] === null)
 {
 	?>
 	<p>
-		You are not allowed to view this page!
+		The request could not be processed because invalid parameters were provided.
 	</p>
 	<?php
 }

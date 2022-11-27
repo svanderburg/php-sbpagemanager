@@ -1,3 +1,6 @@
 <?php
-\SBPageManager\View\HTML\displayDynamicMenuSection($GLOBALS["dbh"], 0, $GLOBALS["checker"]);
+global $currentPage, $dbh;
+
+if(\SBPageManager\View\HTML\visitedPageManagerPage($currentPage))
+	\SBPageManager\View\HTML\displayDynamicMenuSection($dbh, 0, $currentPage);
 ?>
