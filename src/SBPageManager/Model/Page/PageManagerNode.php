@@ -33,16 +33,16 @@ class PageManagerNode extends CRUDMasterPage
 			$contents = new PageManagerContents();
 
 		parent::__construct("Page manager", $index, $contents, array(
-			"create_page" => new PageManagerOperationPage($this, "Create page", $contents, $checker),
-			"insert_page" => new PageManagerOperationPage($this, "Insert page", $contents, $checker),
-			"update_page" => new PageManagerOperationPage($this, "Update page", $contents, $checker),
-			"remove_page" => new PageManagerOperationPage($this, "Remove page", $contents, $checker),
-			"moveup_page" => new PageManagerOperationPage($this, "Move up", $contents, $checker),
-			"movedown_page" => new PageManagerOperationPage($this, "Move down", $contents, $checker)
+			"create_page" => new PageManagerOperationPage($this, $dbh, "Create page", $contents, $checker),
+			"insert_page" => new PageManagerOperationPage($this, $dbh, "Insert page", $contents, $checker),
+			"update_page" => new PageManagerOperationPage($this, $dbh, "Update page", $contents, $checker),
+			"remove_page" => new PageManagerOperationPage($this, $dbh, "Remove page", $contents, $checker),
+			"moveup_page" => new PageManagerOperationPage($this, $dbh, "Move up", $contents, $checker),
+			"movedown_page" => new PageManagerOperationPage($this, $dbh, "Move down", $contents, $checker)
 		), $invalidOperationMessage, $operationParam);
 
-		$this->pageId = $pageId;
 		$this->dbh = $dbh;
+		$this->pageId = $pageId;
 		$this->numOfLevels = $numOfLevels;
 		$this->checker = $checker;
 		$this->index = $index;

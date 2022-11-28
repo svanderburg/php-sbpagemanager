@@ -3,6 +3,7 @@ namespace SBPageManager\Model\CRUD;
 use Exception;
 use PDO;
 use SBLayout\Model\BadRequestException;
+use SBLayout\Model\PageForbiddenException;
 use SBLayout\Model\Route;
 use SBLayout\Model\Page\Page;
 use SBData\Model\Field\HiddenField;
@@ -26,12 +27,12 @@ class PageCRUDInterface extends CRUDInterface
 
 	public ?CRUDForm $form = null;
 
-	public function __construct(Route $route, CRUDPage $crudPage, PDO $dbh)
+	public function __construct(Route $route, CRUDPage $crudPage)
 	{
 		parent::__construct($crudPage);
 		$this->route = $route;
 		$this->crudPage = $crudPage;
-		$this->dbh = $dbh;
+		$this->dbh = $crudPage->dbh;
 	}
 
 	private function constructPageForm(bool $isRootPage): void
@@ -169,11 +170,11 @@ class PageCRUDInterface extends CRUDInterface
 
 	public function executeCRUDOperation(?string $operation): void
 	{
-		if($this->crudPage->checker->checkWritePermissions())
+		if($operation === null)
+			$this->viewEditablePage();
+		else
 		{
-			if($operation === null)
-				$this->viewEditablePage();
-			else
+			if($this->crudPage->checker->checkWritePermissions())
 			{
 				switch($operation)
 				{
@@ -197,9 +198,9 @@ class PageCRUDInterface extends CRUDInterface
 						break;
 				}
 			}
+			else
+				throw new PageForbiddenException("No permissions to modify a page!");
 		}
-		else
-			$this->viewPage();
 	}
 }
 ?>

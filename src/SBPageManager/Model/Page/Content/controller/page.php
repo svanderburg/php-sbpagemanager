@@ -1,8 +1,8 @@
 <?php
 use SBPageManager\Model\CRUD\PageCRUDInterface;
 
-global $crudInterface, $route, $currentPage, $dbh;
+global $crudInterface, $route, $currentPage;
 
-$crudInterface = new PageCRUDInterface($route, $currentPage, $dbh);
+$crudInterface = new PageCRUDInterface($route, $currentPage);
 $crudInterface->executeOperation();
 ?>
