@@ -8,6 +8,7 @@ use SBLayout\Model\Route;
 use SBLayout\Model\Page\Page;
 use SBData\Model\Field\HiddenField;
 use SBData\Model\Field\TextField;
+use SBCrud\Model\RouteUtils;
 use SBCrud\Model\CRUDForm;
 use SBCrud\Model\CRUD\CRUDInterface;
 use SBCrud\Model\Page\CRUDPage;
@@ -124,7 +125,7 @@ class PageCRUDInterface extends CRUDInterface
 		$pageId = $this->crudPage->parentPage->pageId;
 		PageEntity::moveUp($this->dbh, $pageId);
 
-		header("Location: ".$_SERVER["PHP_SELF"]);
+		header("Location: ".RouteUtils::composeSelfURL());
 		exit();
 	}
 
@@ -133,7 +134,7 @@ class PageCRUDInterface extends CRUDInterface
 		$pageId = $this->crudPage->parentPage->pageId;
 		PageEntity::moveDown($this->dbh, $pageId);
 
-		header("Location: ".$_SERVER["PHP_SELF"]);
+		header("Location: ".RouteUtils::composeSelfURL());
 		exit();
 	}
 
