@@ -73,6 +73,7 @@ use SBLayout\Model\Application;
 use SBLayout\Model\Page\HiddenStaticContentPage;
 use SBLayout\Model\Page\Content\Contents;
 use SBLayout\Model\Section\ContentsSection;
+use SBLayout\Model\Section\MenuSection;
 use SBLayout\Model\Section\StaticSection;
 use SBPageManager\Model\Page\PageManager;
 
@@ -92,13 +93,14 @@ $application = new Application(
     /* Sections */
     array(
         "header" => new StaticSection("header.php"),
-        "menu" => new StaticSection("menu.php"),
-        "submenu" => new StaticSection("submenu.php"),
+        "menu" => new MenuSection(0),
+        "submenu" => new MenuSection(1),
         "contents" => new ContentsSection(true)
     ),
 
     /* Pages */
     new PageManager($dbh, 2, $checker, array(
+        "400" => new HiddenStaticContentPage("Bad request", new Contents("error/400.php")),
         "403" => new HiddenStaticContentPage("Forbidden", new Contents("error/403.php")),
         "404" => new HiddenStaticContentPage("Page not found", new Contents("error/404.php")),
         "gallery" => new MyGalleryPage($dbh)
@@ -111,7 +113,7 @@ can be managed dynamically. In the above example, the page manager manges a tree
 structure of two levels (the menu level and sub-menu level).
 
 In addition to dynamically managed pages, we must override a number of pages with
-static pages. For example, the error pages (`403` and `404`) should be
+static pages. For example, the error pages (`404`, `403` and `404`) should be
 overridden as they should work without a database connection.
 
 Moreover, you probably want to override the `gallery` page so that a user can
@@ -140,22 +142,6 @@ class MyPagePermissionChecker implements PagePermissionChecker
 The above permission checker uses a cookie value for authentication, but any
 password policy can be implemented, such as integration with an external
 authentication system.
-
-The menu sections (the `StaticSection`s shown in the above example) can be
-displayed as follows:
-
-```php
-<?php
-global $currentPage, $dbh;
-
-if(\SBPageManager\View\HTML\visitedPageManagerPage($currentPage))
-    \SBPageManager\View\HTML\displayDynamicMenuSection($dbh, 0, $currentPage);
-?>
-```
-
-The above code fragment checks whether the selected page is managed by the page
-manager framework and displays the menu for the items on the menu level (level
-0).
 
 Example
 =======

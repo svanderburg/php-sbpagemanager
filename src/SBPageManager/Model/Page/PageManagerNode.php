@@ -1,5 +1,6 @@
 <?php
 namespace SBPageManager\Model\Page;
+use Iterator;
 use PDO;
 use SBLayout\Model\PageNotFoundException;
 use SBLayout\Model\Page\ContentPage;
@@ -8,6 +9,7 @@ use SBCrud\Model\Page\CRUDMasterPage;
 use SBPageManager\Model\Entity\PageEntity;
 use SBPageManager\Model\Page\Content\PageManagerContents;
 use SBPageManager\Model\PagePermissionChecker;
+use SBPageManager\Model\Page\Iterator\PageManagerNodeIterator;
 
 class PageManagerNode extends CRUDMasterPage
 {
@@ -77,6 +79,11 @@ class PageManagerNode extends CRUDMasterPage
 			return new PageManagerNode($subPageId, $this->dbh, $this->numOfLevels, $this->checker, $this->contents, $this->invalidOperationMessage, $this->operationParam, $this->index + 1);
 		else
 			return null;
+	}
+
+	public function subPageIterator(): Iterator
+	{
+		return new PageManagerNodeIterator($this->dbh, $this);
 	}
 }
 ?>

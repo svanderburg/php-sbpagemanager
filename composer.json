@@ -11,10 +11,7 @@
       }
   ],
   "autoload": {
-      "psr-4": { "SBPageManager\\": "src/SBPageManager" },
-      "files": [
-          "src/SBPageManager/View/HTML/displaydynamicmenusection.php"
-      ]
+      "psr-4": { "SBPageManager\\": "src/SBPageManager" }
   },
   "autoload-dev": {
       "psr-4": {

@@ -15,7 +15,7 @@ class PageManagerOperationPage extends OperationPage
 
 	public function __construct(PageManagerNode $parentPage, PDO $dbh, string $title, PageManagerContents $contents, PagePermissionChecker $checker, string $operationParam = "__operation")
 	{
-		parent::__construct($title, $contents, $operationParam);
+		parent::__construct($title, $contents, $operationParam, dirname(__FILE__)."/../../View/HTML/menuitems/pagemanageroperationpage.php");
 		$this->parentPage = $parentPage;
 		$this->dbh = $dbh;
 		$this->checker = $checker;
