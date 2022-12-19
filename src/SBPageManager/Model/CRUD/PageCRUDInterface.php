@@ -1,13 +1,14 @@
 <?php
 namespace SBPageManager\Model\CRUD;
-use Exception;
 use PDO;
 use SBLayout\Model\BadRequestException;
 use SBLayout\Model\PageForbiddenException;
 use SBLayout\Model\Route;
 use SBLayout\Model\Page\Page;
+use SBData\Model\Value\AcceptableFileNameValue;
 use SBData\Model\Field\HiddenField;
 use SBData\Model\Field\TextField;
+use SBData\Model\Field\AcceptableFileNameField;
 use SBCrud\Model\RouteUtils;
 use SBCrud\Model\CRUDForm;
 use SBCrud\Model\CRUD\CRUDInterface;
@@ -26,7 +27,7 @@ class PageCRUDInterface extends CRUDInterface
 
 	public string $contents;
 
-	public ?CRUDForm $form = null;
+	public CRUDForm $form;
 
 	public function __construct(Route $route, CRUDPage $crudPage)
 	{
@@ -41,16 +42,15 @@ class PageCRUDInterface extends CRUDInterface
 		if($isRootPage)
 			$pageIdField = new HiddenField(false, 255);
 		else
-			$pageIdField = new TextField("Id", true, 20, 255);
+			$pageIdField = new AcceptableFileNameField("Id", true, 20, 255, AcceptableFileNameValue::FLAG_VALID_UNIX | AcceptableFileNameValue::FLAG_SANE);
 
 		$baseURL = Page::computeBaseURL();
 
 		$this->form = new CRUDForm(array(
-			"__operation" => new HiddenField(true),
 			"PAGE_ID" => $pageIdField,
 			"Title" => new TextField("Title", true, 20, 255),
 			"Contents" => new HTMLEditorWithGalleryField("editor1", "Contents", $baseURL."/picturepicker.php", $baseURL."/iframepage.html", $baseURL."/image/editor", false),
-			"PARENT_ID" => new HiddenField(false)
+			"PARENT_ID" => new HiddenField(false, 255)
 		), $this->operationParam);
 	}
 
@@ -77,7 +77,7 @@ class PageCRUDInterface extends CRUDInterface
 
 	private function insertPage(): void
 	{
-		$this->constructPageForm(true);
+		$this->constructPageForm(false);
 		$this->form->importValues($_REQUEST);
 		$this->form->checkFields();
 
@@ -99,7 +99,7 @@ class PageCRUDInterface extends CRUDInterface
 	{
 		$oldPageId = $this->crudPage->parentPage->pageId;
 
-		$this->constructPageForm($oldPageId !== "");
+		$this->constructPageForm($oldPageId === "");
 		$this->form->importValues($_REQUEST);
 		$this->form->checkFields();
 
