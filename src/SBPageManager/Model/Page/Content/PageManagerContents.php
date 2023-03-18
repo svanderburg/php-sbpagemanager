@@ -13,10 +13,10 @@ class PageManagerContents extends Contents
 
 		$sections[$pageManagerSection] = dirname(__FILE__)."/../../../View/HTML/contents/page.php";
 
-		// Append the editor JavaScript file
+		// Append the editor JavaScript files
 		$baseURL = Page::computeBaseURL();
-		$htmlEditorJsPath = $baseURL."/scripts/htmleditor.js";
-		array_push($scripts, $htmlEditorJsPath);
+		array_push($scripts, $baseURL."/scripts/htmleditor.js");
+		array_push($scripts, $baseURL."/scripts/htmleditorwithgallery.js");
 
 		parent::__construct($sections, dirname(__FILE__)."/controller/page.php", $styles, $scripts);
 	}
