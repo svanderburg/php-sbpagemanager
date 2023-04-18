@@ -1,14 +1,12 @@
 <?php
 require_once("../vendor/autoload.php");
-
-use Example\Model\MyGallery;
-
 require_once("includes/config.php");
+use SBGallery\Model\Gallery;
+use Example\Model\Page\Settings\MyGalleryPageSettings;
 
-$dbh = new PDO($config["dbDsn"], $config["dbUsername"], $config["dbPassword"], array(
-	PDO::ATTR_PERSISTENT => true
-));
+$dbh = new PDO($config["dbDsn"], $config["dbUsername"], $config["dbPassword"]);
 
-$myGallery = new MyGallery($dbh);
-\SBGallery\View\HTML\displayPicturePickerPage($myGallery, "Gallery", array("styles/default.css", "styles/gallery.css"));
+$galleryPageSettings = new MyGalleryPageSettings();
+$myGallery = new Gallery($dbh, $galleryPageSettings->gallerySettings);
+\SBGallery\View\HTML\displayPicturePickerPage($myGallery, "Gallery", array("styles/style.css", "styles/gallery.css"));
 ?>

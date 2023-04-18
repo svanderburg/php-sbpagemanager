@@ -18,10 +18,7 @@ if($currentPage->checker->checkWritePermissions())
 		?>
 	</p>
 	<?php
-	\SBData\View\HTML\displayEditableForm($crudInterface->form,
-		"Submit",
-		"One or more fields are incorrectly specified and marked with a red color!",
-		"This field is incorrectly specified!");
+	\SBData\View\HTML\displayEditableForm($crudInterface->form);
 	?>
 	<script type="text/javascript">
 	sbeditor.initEditors();

@@ -113,7 +113,7 @@ can be managed dynamically. In the above example, the page manager manges a tree
 structure of two levels (the menu level and sub-menu level).
 
 In addition to dynamically managed pages, we must override a number of pages with
-static pages. For example, the error pages (`404`, `403` and `404`) should be
+static pages. For example, the error pages (`400`, `403` and `404`) should be
 overridden as they should work without a database connection.
 
 Moreover, you probably want to override the `gallery` page so that a user can

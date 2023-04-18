@@ -10,6 +10,8 @@ class PageManagerNodeIterator implements Iterator
 {
 	public PageManagerNode $parentPage;
 
+	public PDO $dbh;
+
 	public PDOStatement $stmt;
 
 	public $row;
@@ -20,11 +22,9 @@ class PageManagerNodeIterator implements Iterator
 
 	public function __construct(PDO $dbh, PageManagerNode $parentPage)
 	{
+		$this->dbh = $dbh;
 		$this->parentPage = $parentPage;
-		$this->stmt = PageEntity::querySubPages($dbh, $parentPage->pageId);
-		$this->row = $this->stmt->fetch();
 		$this->authenticated = $parentPage->checker->checkWritePermissions();
-		$this->reachedEnd = false;
 	}
 
 	public function current(): mixed
@@ -53,7 +53,9 @@ class PageManagerNodeIterator implements Iterator
 
 	public function rewind(): void
 	{
-		// Do nothing
+		$this->stmt = PageEntity::querySubPages($this->dbh, $this->parentPage->pageId);
+		$this->row = $this->stmt->fetch();
+		$this->reachedEnd = false;
 	}
 
 	public function valid(): bool
