@@ -12,7 +12,7 @@ use SBData\Model\Field\AcceptableFileNameField;
 use SBCrud\Model\RouteUtils;
 use SBCrud\Model\CRUDForm;
 use SBCrud\Model\CRUD\CRUDInterface;
-use SBCrud\Model\Page\CRUDPage;
+use SBCrud\Model\Page\OperationParamPage;
 use SBGallery\Model\Field\HTMLEditorWithGalleryField;
 use SBPageManager\Model\PagePermissionChecker;
 use SBPageManager\Model\Entity\PageEntity;
@@ -21,7 +21,7 @@ class PageCRUDInterface extends CRUDInterface
 {
 	public Route $route;
 
-	public CRUDPage $crudPage;
+	public OperationParamPage $operationParamPage;
 
 	public PDO $dbh;
 
@@ -29,12 +29,12 @@ class PageCRUDInterface extends CRUDInterface
 
 	public CRUDForm $form;
 
-	public function __construct(Route $route, CRUDPage $crudPage)
+	public function __construct(Route $route, OperationParamPage $operationParamPage)
 	{
-		parent::__construct($crudPage);
+		parent::__construct($operationParamPage);
 		$this->route = $route;
-		$this->crudPage = $crudPage;
-		$this->dbh = $crudPage->dbh;
+		$this->operationParamPage = $operationParamPage;
+		$this->dbh = $operationParamPage->dbh;
 	}
 
 	private function constructPageForm(bool $isRootPage): void
@@ -66,7 +66,7 @@ class PageCRUDInterface extends CRUDInterface
 	{
 		$this->constructPageForm(false);
 
-		$parentId = $this->crudPage->parentPage->pageId;
+		$parentId = $this->operationParamPage->parentPage->pageId;
 
 		$row = array(
 			"PARENT_ID" => $parentId
@@ -97,7 +97,7 @@ class PageCRUDInterface extends CRUDInterface
 
 	private function updatePage(): void
 	{
-		$oldPageId = $this->crudPage->parentPage->pageId;
+		$oldPageId = $this->operationParamPage->parentPage->pageId;
 
 		$this->constructPageForm($oldPageId === "");
 		$this->form->importValues($_REQUEST);
@@ -122,7 +122,7 @@ class PageCRUDInterface extends CRUDInterface
 
 	private function moveUpPage(): void
 	{
-		$pageId = $this->crudPage->parentPage->pageId;
+		$pageId = $this->operationParamPage->parentPage->pageId;
 		PageEntity::moveUp($this->dbh, $pageId);
 
 		header("Location: ".RouteUtils::composeSelfURL());
@@ -131,7 +131,7 @@ class PageCRUDInterface extends CRUDInterface
 
 	private function moveDownPage(): void
 	{
-		$pageId = $this->crudPage->parentPage->pageId;
+		$pageId = $this->operationParamPage->parentPage->pageId;
 		PageEntity::moveDown($this->dbh, $pageId);
 
 		header("Location: ".RouteUtils::composeSelfURL());
@@ -140,7 +140,7 @@ class PageCRUDInterface extends CRUDInterface
 
 	private function removePage(): void
 	{
-		$pageId = $this->crudPage->parentPage->pageId;
+		$pageId = $this->operationParamPage->parentPage->pageId;
 
 		if($pageId === "")
 			throw new BadRequestException("The root page cannot be removed!");
@@ -158,9 +158,9 @@ class PageCRUDInterface extends CRUDInterface
 
 	private function viewEditablePage(): void
 	{
-		$this->constructPageForm($this->crudPage->pageId === "");
+		$this->constructPageForm($this->operationParamPage->pageId === "");
 
-		$page = $this->crudPage->entity;
+		$page = $this->operationParamPage->entity;
 
 		if($page['PAGE_ID'] !== "")
 			$page['PAGE_ID'] = basename($page['PAGE_ID']);
@@ -175,7 +175,7 @@ class PageCRUDInterface extends CRUDInterface
 			$this->viewEditablePage();
 		else
 		{
-			if($this->crudPage->checker->checkWritePermissions())
+			if($this->operationParamPage->checker->checkWritePermissions())
 			{
 				switch($operation)
 				{
