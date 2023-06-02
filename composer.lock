@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/svanderburg/php-sbcrud.git",
-                "reference": "730384256c5d2fa9478933399dfd142cd85fe23b"
+                "reference": "7a5162f12847dd5b1e96703668543d2b7f1b5024"
             },
             "require": {
                 "svanderburg/php-sbdata": "dev-master",
@@ -48,7 +48,7 @@
                 }
             ],
             "description": "Abstractions to construct web-based information systems",
-            "time": "2023-05-31T16:29:17+00:00"
+            "time": "2023-06-02T16:04:02+00:00"
         },
         {
             "name": "svanderburg/php-sbdata",
@@ -136,7 +136,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/svanderburg/php-sbeditor.git",
-                "reference": "56747f6ac3aa4244ffb21f8ca9c2011990a3482c"
+                "reference": "70b2f7acdd97b3eae9b59dba482e70d4103b8838"
             },
             "require-dev": {
                 "svanderburg/php-sbdata": "dev-master"
@@ -163,7 +163,7 @@
                 }
             ],
             "description": "Simple embeddable HTML editor",
-            "time": "2023-03-18T15:58:28+00:00"
+            "time": "2023-06-07T20:54:31+00:00"
         },
         {
             "name": "svanderburg/php-sbgallery",
@@ -171,7 +171,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/svanderburg/php-sbgallery.git",
-                "reference": "c9fbd2601429979e8df5c66b612dcc8e81850229"
+                "reference": "7ad34d2f1e87d3af9990e274634447119e835c14"
             },
             "require": {
                 "ext-gd": "*",
@@ -200,6 +200,7 @@
                 "psr-4": {
                     "Examples\\LowLevel\\": "examples/lowlevel/includes",
                     "Examples\\CRUD\\": "examples/crud/includes",
+                    "Examples\\CRUDTranslated\\": "examples/crud-translated/includes",
                     "Examples\\Pages\\": "examples/pages/includes"
                 }
             },
@@ -214,7 +215,7 @@
                 }
             ],
             "description": "Simple embeddable picture gallery",
-            "time": "2023-05-31T16:31:25+00:00"
+            "time": "2023-06-08T21:45:21+00:00"
         },
         {
             "name": "svanderburg/php-sblayout",
