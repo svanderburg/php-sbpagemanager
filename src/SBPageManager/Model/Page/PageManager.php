@@ -1,11 +1,13 @@
 <?php
 namespace SBPageManager\Model\Page;
+use Iterator;
 use PDO;
 use SBLayout\Model\Application;
 use SBLayout\Model\Route;
 use SBLayout\Model\Page\ContentPage;
 use SBPageManager\Model\Page\Content\PageManagerContents;
 use SBPageManager\Model\PagePermissionChecker;
+use SBPageManager\Model\Page\Iterator\PageManagerIterator;
 
 class PageManager extends PageManagerNode
 {
@@ -25,6 +27,11 @@ class PageManager extends PageManagerNode
 			return $this->overrides[$currentId];
 		else
 			return parent::createDetailPage($query);
+	}
+
+	public function subPageIterator(): Iterator
+	{
+		return new PageManagerIterator($this->dbh, $this);
 	}
 }
 ?>

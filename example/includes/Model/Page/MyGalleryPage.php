@@ -1,17 +1,17 @@
 <?php
 namespace Example\Model\Page;
 use PDO;
-use SBGallery\Model\Page\GalleryPage;
 use SBGallery\Model\Page\Content\GalleryContents;
 use SBGallery\Model\GalleryPermissionChecker;
-use Example\Model\MyGalleryPermissionChecker;
+use SBPageManager\Model\Page\IntegratedGalleryPage;
+use Example\Model\MyPagePermissionChecker;
 use Example\Model\Page\Settings\MyGalleryPageSettings;
 
-class MyGalleryPage extends GalleryPage
+class MyGalleryPage extends IntegratedGalleryPage
 {
 	public function __construct(PDO $dbh)
 	{
-		parent::__construct($dbh, new MyGalleryPageSettings(), new MyGalleryPermissionChecker(), new GalleryContents(null, "contents", "HTML", array("gallery.css")));
+		parent::__construct($dbh, new MyGalleryPageSettings(), new MyPagePermissionChecker(), new GalleryContents(null, "contents", "HTML", array("gallery.css")));
 	}
 }
 ?>

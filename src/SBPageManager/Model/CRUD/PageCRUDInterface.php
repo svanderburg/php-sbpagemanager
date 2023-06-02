@@ -14,7 +14,6 @@ use SBCrud\Model\CRUDForm;
 use SBCrud\Model\CRUD\CRUDInterface;
 use SBCrud\Model\Page\OperationParamPage;
 use SBGallery\Model\Field\HTMLEditorWithGalleryField;
-use SBPageManager\Model\PagePermissionChecker;
 use SBPageManager\Model\Entity\PageEntity;
 
 class PageCRUDInterface extends CRUDInterface

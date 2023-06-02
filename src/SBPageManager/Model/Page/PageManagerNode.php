@@ -36,8 +36,8 @@ class PageManagerNode extends CRUDMasterPage
 
 		parent::__construct("Page manager", $index, $contents, array(
 			"create_page" => new PageManagerOperationPage($this, $dbh, "Create page", $contents, $checker),
-			"insert_page" => new PageManagerOperationPage($this, $dbh, "Insert page", $contents, $checker),
-			"update_page" => new PageManagerOperationPage($this, $dbh, "Update page", $contents, $checker),
+			"insert_page" => new HiddenPageManagerOperationPage($this, $dbh, "Insert page", $contents, $checker),
+			"update_page" => new HiddenPageManagerOperationPage($this, $dbh, "Update page", $contents, $checker),
 			"remove_page" => new PageManagerOperationPage($this, $dbh, "Remove page", $contents, $checker),
 			"moveup_page" => new PageManagerOperationPage($this, $dbh, "Move up", $contents, $checker),
 			"movedown_page" => new PageManagerOperationPage($this, $dbh, "Move down", $contents, $checker)
