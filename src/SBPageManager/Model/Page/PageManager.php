@@ -8,14 +8,15 @@ use SBLayout\Model\Page\ContentPage;
 use SBPageManager\Model\Page\Content\PageManagerContents;
 use SBPageManager\Model\PagePermissionChecker;
 use SBPageManager\Model\Page\Iterator\PageManagerIterator;
+use SBPageManager\Model\Labels\PageManagerLabels;
 
 class PageManager extends PageManagerNode
 {
 	public array $overrides;
 
-	public function __construct(PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, array $overrides = array(), PageManagerContents $contents = null, string $invalidOperationMessage = "Invalid operation:", string $operationParam = "__operation", int $index = 0)
+	public function __construct(PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, array $overrides = array(), PageManagerLabels $labels = null, PageManagerContents $contents = null, string $invalidOperationMessage = "Invalid operation:", string $operationParam = "__operation", int $index = 0)
 	{
-		parent::__construct("", $dbh, $numOfLevels, $checker, $contents, $invalidOperationMessage, $operationParam, $index);
+		parent::__construct("", $dbh, $numOfLevels, $checker, $labels, $contents, $invalidOperationMessage, $operationParam, $index);
 		$this->overrides = $overrides;
 	}
 

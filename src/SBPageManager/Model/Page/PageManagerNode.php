@@ -10,6 +10,7 @@ use SBPageManager\Model\Entity\PageEntity;
 use SBPageManager\Model\Page\Content\PageManagerContents;
 use SBPageManager\Model\PagePermissionChecker;
 use SBPageManager\Model\Page\Iterator\PageManagerNodeIterator;
+use SBPageManager\Model\Labels\PageManagerLabels;
 
 class PageManagerNode extends CRUDMasterPage
 {
@@ -21,6 +22,8 @@ class PageManagerNode extends CRUDMasterPage
 
 	public PagePermissionChecker $checker;
 
+	public PageManagerLabels $labels;
+
 	public string $invalidOperationMessage;
 
 	public string $operationParam;
@@ -29,24 +32,28 @@ class PageManagerNode extends CRUDMasterPage
 
 	public array $entity;
 
-	public function __construct(string $pageId, PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, PageManagerContents $contents = null, string $invalidOperationMessage = "Invalid operation:", string $operationParam = "__operation", int $index = 0)
+	public function __construct(string $pageId, PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, PageManagerLabels $labels = null, PageManagerContents $contents = null, string $invalidOperationMessage = "Invalid operation:", string $operationParam = "__operation", int $index = 0)
 	{
 		if($contents === null)
 			$contents = new PageManagerContents();
 
+		if($labels === null)
+			$labels = new PageManagerLabels();
+
 		parent::__construct("Page manager", $index, $contents, array(
-			"create_page" => new PageManagerOperationPage($this, $dbh, "Create page", $contents, $checker),
-			"insert_page" => new HiddenPageManagerOperationPage($this, $dbh, "Insert page", $contents, $checker),
-			"update_page" => new HiddenPageManagerOperationPage($this, $dbh, "Update page", $contents, $checker),
-			"remove_page" => new PageManagerOperationPage($this, $dbh, "Remove page", $contents, $checker),
-			"moveup_page" => new PageManagerOperationPage($this, $dbh, "Move up", $contents, $checker),
-			"movedown_page" => new PageManagerOperationPage($this, $dbh, "Move down", $contents, $checker)
+			"create_page" => new PageManagerOperationPage($this, $dbh, "Create page", $contents, $checker, $labels, $operationParam),
+			"insert_page" => new HiddenPageManagerOperationPage($this, $dbh, "Insert page", $contents, $checker, $labels, $operationParam),
+			"update_page" => new HiddenPageManagerOperationPage($this, $dbh, "Update page", $contents, $checker, $labels, $operationParam),
+			"remove_page" => new PageManagerOperationPage($this, $dbh, "Remove page", $contents, $checker, $labels, $operationParam),
+			"moveup_page" => new PageManagerOperationPage($this, $dbh, "Move up", $contents, $checker, $labels, $operationParam),
+			"movedown_page" => new PageManagerOperationPage($this, $dbh, "Move down", $contents, $checker, $labels, $operationParam)
 		), $invalidOperationMessage, $operationParam);
 
 		$this->dbh = $dbh;
 		$this->pageId = $pageId;
 		$this->numOfLevels = $numOfLevels;
 		$this->checker = $checker;
+		$this->labels = $labels;
 		$this->index = $index;
 		$this->invalidOperationMessage = $invalidOperationMessage;
 		$this->operationParam = $operationParam;
@@ -76,7 +83,7 @@ class PageManagerNode extends CRUDMasterPage
 			$subPageId = $this->pageId."/".$query[$this->index];
 
 		if($this->index < $this->numOfLevels)
-			return new PageManagerNode($subPageId, $this->dbh, $this->numOfLevels, $this->checker, $this->contents, $this->invalidOperationMessage, $this->operationParam, $this->index + 1);
+			return new PageManagerNode($subPageId, $this->dbh, $this->numOfLevels, $this->checker, $this->labels, $this->contents, $this->invalidOperationMessage, $this->operationParam, $this->index + 1);
 		else
 			return null;
 	}

@@ -15,6 +15,7 @@ use SBCrud\Model\CRUD\CRUDInterface;
 use SBCrud\Model\Page\OperationParamPage;
 use SBGallery\Model\Field\HTMLEditorWithGalleryField;
 use SBPageManager\Model\Entity\PageEntity;
+use SBPageManager\Model\Labels\PageManagerLabels;
 
 class PageCRUDInterface extends CRUDInterface
 {
@@ -24,7 +25,7 @@ class PageCRUDInterface extends CRUDInterface
 
 	public PDO $dbh;
 
-	public string $contents;
+	public PageManagerLabels $labels;
 
 	public CRUDForm $form;
 
@@ -34,6 +35,7 @@ class PageCRUDInterface extends CRUDInterface
 		$this->route = $route;
 		$this->operationParamPage = $operationParamPage;
 		$this->dbh = $operationParamPage->dbh;
+		$this->labels = $this->operationParamPage->labels;
 	}
 
 	private function constructPageForm(bool $isRootPage): void
@@ -41,14 +43,14 @@ class PageCRUDInterface extends CRUDInterface
 		if($isRootPage)
 			$pageIdField = new HiddenField(false, 255);
 		else
-			$pageIdField = new AcceptableFileNameField("Id", true, 20, 255, AcceptableFileNameValue::FLAG_VALID_UNIX | AcceptableFileNameValue::FLAG_SANE);
+			$pageIdField = new AcceptableFileNameField($this->labels->id, true, 20, 255, AcceptableFileNameValue::FLAG_VALID_UNIX | AcceptableFileNameValue::FLAG_SANE);
 
 		$baseURL = Page::computeBaseURL();
 
 		$this->form = new CRUDForm(array(
 			"PAGE_ID" => $pageIdField,
-			"Title" => new TextField("Title", true, 20, 255),
-			"Contents" => new HTMLEditorWithGalleryField("editor1", "Contents", $baseURL."/picturepicker.php", $baseURL."/iframepage.html", $baseURL."/image/editor", false),
+			"Title" => new TextField($this->labels->title, true, 20, 255),
+			"Contents" => new HTMLEditorWithGalleryField("editor1", $this->labels->contents, $baseURL."/picturepicker.php", $baseURL."/iframepage.html", $baseURL."/image/editor", false),
 			"PARENT_ID" => new HiddenField(false, 255)
 		), $this->operationParam);
 	}
@@ -110,7 +112,7 @@ class PageCRUDInterface extends CRUDInterface
 				$page["PAGE_ID"] = $page["PARENT_ID"]."/".$page["PAGE_ID"];
 
 			if($oldPageId === "" && $page["PAGE_ID"] !== "")
-				throw new BadRequestException("The root page cannot be renamed!");
+				throw new BadRequestException($this->labels->cannotRenameRootPage);
 
 			PageEntity::update($this->dbh, $page, $oldPageId);
 
@@ -142,7 +144,7 @@ class PageCRUDInterface extends CRUDInterface
 		$pageId = $this->operationParamPage->parentPage->pageId;
 
 		if($pageId === "")
-			throw new BadRequestException("The root page cannot be removed!");
+			throw new BadRequestException($this->labels->cannotRemoveRootPage);
 
 		PageEntity::remove($this->dbh, $pageId);
 
@@ -199,7 +201,7 @@ class PageCRUDInterface extends CRUDInterface
 				}
 			}
 			else
-				throw new PageForbiddenException("No permissions to modify a page!");
+				throw new PageForbiddenException($this->labels->noPermissions);
 		}
 	}
 }
