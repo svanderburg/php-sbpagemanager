@@ -9,7 +9,7 @@ use SBPageManager\Model\GalleryPermissionCheckerAdapter;
 
 class IntegratedGalleryPage extends GalleryPage
 {
-	public function __construct(PDO $dbh, GalleryPageSettings $settings, PagePermissionChecker $checker, GalleryContents $contents = null)
+	public function __construct(PDO $dbh, GalleryPageSettings $settings, PagePermissionChecker $checker, ?GalleryContents $contents = null)
 	{
 		parent::__construct($dbh, $settings, new GalleryPermissionCheckerAdapter($checker), $contents);
 	}

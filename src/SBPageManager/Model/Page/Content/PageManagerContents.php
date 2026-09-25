@@ -5,7 +5,7 @@ use SBLayout\Model\Page\Content\Contents;
 
 class PageManagerContents extends Contents
 {
-	public function __construct(string $pageManagerSection = "contents", array $sections = null, array $styles = array(), array $scripts = array())
+	public function __construct(string $pageManagerSection = "contents", ?array $sections = null, array $styles = array(), array $scripts = array())
 	{
 		// Configure the sections
 		if($sections === null)

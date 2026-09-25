@@ -32,7 +32,7 @@ class PageManagerNode extends CRUDMasterPage
 
 	public array $entity;
 
-	public function __construct(string $pageId, PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, PageManagerLabels $labels = null, PageManagerContents $contents = null, string $invalidOperationMessage = "Invalid operation:", string $operationParam = "__operation", int $index = 0)
+	public function __construct(string $pageId, PDO $dbh, int $numOfLevels, PagePermissionChecker $checker, ?PageManagerLabels $labels = null, ?PageManagerContents $contents = null, string $invalidOperationMessage = "Invalid operation:", string $operationParam = "__operation", int $index = 0)
 	{
 		if($contents === null)
 			$contents = new PageManagerContents();
